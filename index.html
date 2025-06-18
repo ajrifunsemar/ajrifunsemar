@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="mapbox/mapbox-gl.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>3D VIEW UNIVERSITAS SEBELAS MARET</title>
+    </head>
+	<body>
+        <div style= "background : linear-gradient(to right, #cc66ff 0%, #ffff99 100%); color: black; padding: 20px 10px; text-align: center; font-family: Copperplate, Perpetua; box-shadow: 2px 2px 10px rgba(0,0,0,5);z-index: 9999;">
+			<h2 style="margin: 0;">3D VIEW UNIVERSITAS SEBELAS MARET</h2>
+			<p style="margin: 0;">Dibuat guna memenuhi nilai proyek SIG Terapan</p></div>
+        </div>
+		<div style="
+		position: absolute;
+		bottom: 20px;
+		left: 20px;
+		background : linear-gradient(to right, #cc66ff 0%, #ffff99 100%);
+		color: black;
+		border: 1px solid black;
+		padding: 15px;
+		font-family: Copperplate, Perpetua;
+		font-size: 12px;
+		box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+		z-index: 9999;
+		">
+		<strong>Dibuat oleh</strong><br>
+		1. Aji Prasetyo (K5422003)
+		<br>
+		2. Arif Fadhilah (K5422012)
+		</div>
+		<div style="
+		position: absolute;
+		bottom: 20px;
+		right: 20px;
+		background : linear-gradient(to right, #cc66ff 0%, #ffff99 100%);
+		color: black;
+		border: 1px solid black;
+		padding: 15px;
+		font-family: Copperplate, Perpetua;
+		font-size: 12px;
+		box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+		z-index: 9998;
+		">
+		<strong>Keterangan</strong><br>
+		Peta interaktif 3D ini menyajikan visualisasi bangunan dalam bentuk
+		<br>
+		tiga dimensi di kawasan wilayah Universitas Sebelas Maret (UNS). Setiap
+		<br>
+		objek bangunan ditampilkan dengan ketinggian relatif berdasarkan data
+		<br>
+		atribut geospasial (Z) yang dimiliki. Pengguna dapat memperbesar, memutar,
+		<br>
+		dan menelusuri area kampus secara dinamis untuk mendapatkan pemahaman
+		<br>
+		spasial yang lebih komprehensif. Peta ini dapat digunakan untuk perencanaan
+		<br>
+		tata ruang, identifikasi struktur fisik bangunan atau area kampus, hingga
+		<br>
+		keperluan edukasi maupun simulasi lingkungan kampus secara lebih nyata.
+		</div>
+		<div style="
+		position: absolute;
+		bottom: 20px;
+		left: 50%;
+		transform: translateX(-50%);
+		background : white;
+		color: black;
+		border: 1px solid black;
+		padding: 15px;
+		font-family: sans-serif;
+		font-size: 12px;
+		box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+		z-index: 9999;
+		">
+		<strong>Navigation Control</strong><br>
+		1. Klik kanan untuk menggeser display
+		<br>
+		2. Klik kiri untuk Orbit view
+		</div>
+		<div id="legend" style="
+  position: absolute;
+  bottom: 40%;
+  left: 0px;
+  transform: translateY(-50%);
+  background-color: white;
+  padding: 10px 15px;
+  font-family: sans-serif;
+  font-size: 9px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  z-index: 1;
+  text-align: left;
+">
+  <strong>Legenda:</strong><br/>
+    <span style="display:inline-block;width:10px;height:10px;background:#37e6e0;margin-right:8px;"></span>
+  Universitas Sebelas Maret
+  <br>
+    <span style="display:inline-block;width:10px;height:10px;background:#cd9c31;margin-right:8px;"></span>
+  Pusat Olahraga
+  <br>
+    <span style="display:inline-block;width:10px;height:10px;background:#d720e1;margin-right:8px;"></span>
+  Masjid
+  <br>
+    <span style="display:inline-block;width:10px;height:10px;background:#5e6bd3;margin-right:8px;"></span>
+  Hotel
+  <br>
+    <span style="display:inline-block;width:10px;height:10px;background:#32cb25;margin-right:8px;"></span>
+  Greenhouse
+  <br>
+  <span style="display:inline-block;width:10px;height:10px;background:#e77712;margin-right:8px;"></span>
+  Bangunan Lain
+</div>
+		    <body>
+		<div id="map">
+            <nav id="menu"></nav>
+              <div id="distance" class="distance-container"></div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="./mapbox/mapbox-gl.js"></script>
+        <script src="data/UNS_1.js"></script>
+<script src="./mapbox/style.js"></script>
+<script src="./js/Autolinker.min.js"></script>
+<script>
+var map = new mapboxgl.Map({
+ container: 'map',
+ style: styleJSON,
+ center: [110.85474259933055,-7.560289757538924],
+ zoom: 16,
+ bearing: 360.0,
+ attributionControl: false
+});
+map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+map.addControl(new mapboxgl.AttributionControl({
+    customAttribution: '<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://github.com/mapbox/mapbox-gl-js" target="_blank">Mapbox GL JS</a> &middot; <a href="https://qgis.org" target="_blank">QGIS</a>',
+    compact: false
+}));
+var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+
+map.on('click', 'lyr_UNS_1_0', function (e) {
+    var description = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (e.features[0].properties['OBJECTID'] !== null ? autolinker.link(e.features[0].properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (e.features[0].properties['building'] !== null ? autolinker.link(e.features[0].properties['building'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (e.features[0].properties['Z'] !== null ? autolinker.link(e.features[0].properties['Z'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>'
+
+    new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(description)
+        .addTo(map);
+});
+
+// Change the cursor to a pointer when the mouse is over the places layer.
+map.on('mouseenter', 'lyr_UNS_1_0', function () {
+    map.getCanvas().style.cursor = 'pointer';
+});
+
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', 'lyr_UNS_1_0', function () {
+    map.getCanvas().style.cursor = '';
+});
+</script>
+        <script>
+        map.addControl(
+            new mapboxgl.GeolocateControl());
+                positionOptions: {
+                    enableHighAccuracy: true
+                };
+                trackUserLocation: true
+
+    // Saat peta selesai dimuat
+    map.on('load', function () {
+      map.addSource('uns-3d-source', {
+        type: 'geojson',
+        data: json_UNS_1 // dari file UNS_1.js
+      });
+
+      map.addLayer({
+        id: 'uns-3d-layer',
+        type: 'fill-extrusion',
+        source: 'uns-3d-source',
+        paint: {
+          'fill-extrusion-color': [
+      "case",
+      [
+        "==",
+        ["get", "building"],
+        "etc"
+      ],
+      "#e77712",
+      [
+        "==",
+        ["get", "building"],
+        "greenhouse"
+      ],
+      "#32cb25",
+      [
+        "==",
+        ["get", "building"],
+        "hotel"
+      ],
+      "#5e6bd3",
+      [
+        "==",
+        ["get", "building"],
+        "mosque"
+      ],
+      "#d720e1",
+      [
+        "==",
+        ["get", "building"],
+        "sports_centre"
+      ],
+      "#cd9c31",
+      [
+        "==",
+        ["get", "building"],
+        "university"
+      ],
+      "#37e6e0",
+      [
+        "==",
+        ["get", "building"],
+        "NULL"
+      ],
+      "#7ccb38",
+      "#ffffff"
+    ],
+          'fill-extrusion-height': ['get', 'Z'],
+          'fill-extrusion-base': 0,
+          'fill-extrusion-opacity': 0.7
+		          }
+      });
+        });
+        </script>
+    </body>
+</html>
